@@ -7,7 +7,6 @@ const mongoose = require("mongoose");
 const path = require("path");
 const methodOverride = require("method-override");
 const ejsMate =require("ejs-mate");
-// const MONGO_URL = "mongodb://127.0.0.1:27017/wanderlust";y
 const dbUrl=process.env.ATLASDB_URL;
 const ExpressError = require("./utils/ExpressError.js");
 const cookieParser = require("cookie-parser");
@@ -26,7 +25,7 @@ const userRouter=require("./routes/user.js");
 const store = MongoStore.create({
   mongoUrl: dbUrl,
   crypto: {
-    secret: "mysupersecretcode",
+    secret: process.env.SECRET,
   },
   touchAfter: 24 * 3600,
 });
@@ -37,7 +36,7 @@ store.on("error",()=>{
 
 const sessionOptions={
   store,
-  secret:"vikashkr",
+  secret:process.env.SECRET,
   resave:false,
   saveUninitialized:true,
   cookie:{
@@ -117,9 +116,9 @@ app.use(methodOverride("_method"));
 app.engine("ejs",ejsMate);
 app.use(express.static(path.join(__dirname,"/public"))); //to use static file css
 
-app.get("/", (req, res) => {
-  res.send("Hi, I am root");
-});
+// app.get("/", (req, res) => {
+//   res.send("Hi, I am root");
+// });
 
 app.use(session(sessionOptions));
 app.use(flash());
@@ -137,17 +136,7 @@ app.use((req,res,next)=>{
   res.locals.currUser = req.user;  
   next();
 });
-
-// app.get("/demouser", async (req, res) => {
-//   let fakeUser = new user({
-//     email: "student@gmail.com",
-//     username: "delta-student",
-//   });
-
-//   let registeredUser = await user.register(fakeUser, "helloworld");
-//   res.send(registeredUser);
-// });  
-
+ 
 app.use("/listings",listingsRouter);
 app.use("/listings/:id/reviews",reviewsRouter);
 app.use("/",userRouter);
