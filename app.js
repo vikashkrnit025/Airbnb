@@ -117,7 +117,7 @@ app.engine("ejs",ejsMate);
 app.use(express.static(path.join(__dirname,"/public"))); //to use static file css
 
 // app.get("/", (req, res) => {
-//   res.send("Hi, I am root");
+//   res.redirect("/listings"); 
 // });
 
 app.use(session(sessionOptions));
