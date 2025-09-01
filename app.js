@@ -46,9 +46,9 @@ const sessionOptions={
   },
 };
 
-app.get("/test",(req,res)=>{
-  res.send("test successful");
-});
+// app.get("/test",(req,res)=>{
+//   res.send("test successful");
+// });
 
 app.use(cookieParser());
 app.use(session(sessionOptions));
@@ -116,9 +116,9 @@ app.use(methodOverride("_method"));
 app.engine("ejs",ejsMate);
 app.use(express.static(path.join(__dirname,"/public"))); //to use static file css
 
-// app.get("/", (req, res) => {
-//   res.redirect("/listings"); 
-// });
+app.get("/", (req, res) => {
+  res.redirect("/listings");
+});
 
 app.use(session(sessionOptions));
 app.use(flash());
